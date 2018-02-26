@@ -1,0 +1,48 @@
+<form action='/' method='get'><button type='submit' class='btn btn-primary'>Home</button></form>
+
+<form class="form-group" action="/list/<%=@list.id%>" method="post">
+  <label>New Task:</label>
+  <input type="text" name="task_description">
+  <input type="date" name="date">
+  <input type="time" name="time">
+  <select placeholder="HR">
+    <% h = 0
+       while h < 13 do %>
+          <option value="<%=h%>"><%= h %></option>
+          <% h += 1 %>
+        <% end %>
+  </select>
+  <select>
+    <% h = 0
+       while h < 13 do %>
+          <option value="<%=h%>"><%= h %></option>
+          <% h += 1 %>
+        <% end %>
+  </select>
+
+
+  <button type="submit" class="btn btn-primary">Add</button>
+</form>
+
+<h3>Your list:</h3>
+<h4><%= @list.name %> : <%= @list.description%></a></h4>
+<form action="/list/<%=@list.id%>" method="post" id="complete_form">
+  <input name="_method" type="hidden" value="patch" autocomplete="off">
+  <table>
+    <tr>
+      <th>Description</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th style='width:100px'>Complete</th>
+    </tr>
+  <% @not_done_tasks.reverse_each do |task| %>
+    <tr>
+      <td><%=task.description%></td>
+      <td><%=task.date%></td>
+      <td><%=task.time.to_s.gsub(/(2000-01-01)/,'').gsub(/ UTC/,'').gsub(/:0{2}(?!:)/,'').gsub(/ 0{1}/,' ')%></td>
+      <td><input type=checkbox name="checkboxes[]" value="<%=task.id%>"></td>
+    </tr>
+  <%end%>
+  </table>
+  <button type="submit" class="btn btn-warning">Complete selected tasks</button>
+</form>

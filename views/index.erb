@@ -1,0 +1,12 @@
+<form class="form-group" action="/" method="post">
+  <label>New list:</label>
+  <input type="text" name="list_name" autocomplete="off">
+  <label>Description:</label>
+  <input type="text" name="list_description" autocomplete="off">
+  <button type="submit" class="btn btn-primary">Add</button>
+</form>
+
+<h4>Your lists:</h4>
+<% @lists.reverse_each do |list| %>
+  <a href="list/<%=list.id%>"><%= list.name %> : <%= list.description%></a></p>
+<% end %>
