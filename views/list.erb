@@ -1,28 +1,42 @@
+
 <form action='/' method='get'><button type='submit' class='btn btn-primary'>Home</button></form>
+
+<% if @list %>
+
+
 
 <form class="form-group" action="/list/<%=@list.id%>" method="post">
   <label>New Task:</label>
   <input type="text" name="task_description">
   <input type="date" name="date">
-  <input type="time" name="time">
-  <select placeholder="HR">
-    <% h = 0
-       while h < 13 do %>
+
+  <select name="hour">
+    <option default value="">hour</option>
+    <% h = 0 %>
+       <% while h < 13 %>
           <option value="<%=h%>"><%= h %></option>
           <% h += 1 %>
         <% end %>
   </select>
-  <select>
-    <% h = 0
-       while h < 13 do %>
-          <option value="<%=h%>"><%= h %></option>
-          <% h += 1 %>
+  <select name="minute">
+    <option default value="">minutes</option>
+    <% m = 0 %>
+      <% while m < 46 %>
+          <option value="<%=m%>"><%= m %></option>
+          <% m += 15 %>
         <% end %>
+  </select>
+  <select name="ampm">
+    <option default value="">AM/PM</option>
+    <option value="AM">AM</option>
+    <option value="PM">PM</option>
   </select>
 
 
   <button type="submit" class="btn btn-primary">Add</button>
 </form>
+
+
 
 <h3>Your list:</h3>
 <h4><%= @list.name %> : <%= @list.description%></a></h4>
@@ -33,7 +47,7 @@
       <th>Description</th>
       <th>Date</th>
       <th>Time</th>
-      <th style='width:100px'>Complete</th>
+      <th style='width:90px'>Complete</th>
     </tr>
   <% @not_done_tasks.reverse_each do |task| %>
     <tr>
@@ -45,4 +59,10 @@
   <%end%>
   </table>
   <button type="submit" class="btn btn-warning">Complete selected tasks</button>
+
 </form>
+<form action='/list/<%=@list.id%>' method='post'>
+  <input type="hidden" name="_method" value="delete"><button type='submit' class='btn btn-danger'>Delete</button></form>
+<% else %>
+<p>This list has been deleted</P>
+  <%end%>

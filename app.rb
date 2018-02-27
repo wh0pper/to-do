@@ -28,7 +28,8 @@ end
 post('/list/:id') do
   id = params.fetch("id")
   @list = List.find(id)
-  Task.create({:description => params[:task_description], :done => false, :list_id => id, :date => params[:date], :time => params[:time]})
+  time = params[:hour] + ":" + params[:minute] + " " + params[:ampm]
+  Task.create({:description => params[:task_description], :done => false, :list_id => id, :date => params[:date], :time => time})
   @not_done_tasks = Task.where(done: false, list_id: id)
   erb(:list)
 end
@@ -43,4 +44,12 @@ patch('/list/:id') do
   @list = List.find(id)
   @not_done_tasks = Task.where(done: false, list_id: id)
   erb(:list)
+end
+
+delete('/list/:id') do
+  id = params.fetch("id")
+  @list = List.find(id)
+  @list.destroy
+  @lists = List.all
+  erb(:index)
 end
